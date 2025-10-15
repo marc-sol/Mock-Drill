@@ -182,48 +182,7 @@ namespace RobotCleaner
         direction *= -1;
     }
   }
-  
-  public class SpiralStrategy : IStrategy
-  {
-    public void Clean(Robot robot)
-    {
-      int[] dx = {1, 0, -1, 0};
-      int[] dy = {0, 1, 0, -1};
-      int dir = 0;
-
-      int SegmentLen = 1;
-      int StepsTaken = 0;
-      int turns = 0;
-
-      robot.CleanCurrentSpot();
-
-      while (true)
-      {
-        bool moved = false;
-
-        for(int i = 0; i < SegmentLen; i++)
-        {
-
-          int nextX = robot.X + dx[dir];
-          int nextY = robot.Y + dy[dir];
-          if (!robot.Move(nextX, nextY))
-          {
-            return;
-          }
-          robot.CleanCurrentSpot();
-          moved = true;
-        }
-
-        dir = (dir + 1) % 4;
-        turns++;
-
-        if (turns % 2 == 0)
-          SegmentLen++;
-        if (!moved) break;
-      }
-    }
-  }
-
+ 
   public class Program
   {
 
@@ -234,15 +193,12 @@ namespace RobotCleaner
       //IStrategy some_strategy = new SomeStrategy();
       
       IStrategy strategy = new PerimeterHuggerStrategy();
-      //IStrategy spiral_strategy = new SpiralStrategy();
-      // Optional: Ensure the robot starts at a corner for predictable behavior
-       
+      
       Map map = new Map(20, 10);
       // map.Display( 10,10);
 
       map.AddDirt(5,3);
       map.AddDirt(10, 8);
-      //map.AddDirt(1, 1);
       map.AddObstacle(2,5);
       map.AddObstacle(12,1);
       map.Display(11,8);
